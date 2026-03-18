@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local First — North Shore IT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0f1f3d;
+      --navy-light: #1a3260;
+      --blue: #2563eb;
+      --blue-light: #3b82f6;
+      --sky: #e8f0fe;
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --green: #16a34a;
+      --amber: #d97706;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--gray-800); background: var(--white); line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(15,31,61,0.97); backdrop-filter: blur(8px);
+      padding: 0 2rem; display: flex; align-items: center;
+      justify-content: space-between; height: 64px;
+    }
+    .nav-logo { font-size: 1.15rem; font-weight: 700; color: var(--white); letter-spacing: -0.02em; text-decoration: none; }
+    .nav-logo span { color: var(--blue-light); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: white; }
+    .nav-cta { background: var(--blue); color: white !important; padding: 0.5rem 1.25rem; border-radius: 6px; }
+    .nav-cta:hover { background: var(--blue-light) !important; }
+
+    /* HERO */
+    .hero {
+      min-height: 88vh;
+      background: linear-gradient(135deg, #080f1f 0%, #0f1f3d 50%, #0c2340 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 2rem 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(ellipse at 50% 50%, rgba(220,38,38,0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(220,38,38,0.15); border: 1px solid rgba(220,38,38,0.3);
+      color: #fca5a5; font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800;
+      color: var(--white); line-height: 1.15; letter-spacing: -0.03em;
+      max-width: 820px; margin: 0 auto 1.5rem;
+    }
+    .hero h1 em { font-style: normal; color: #60a5fa; }
+    .hero p { font-size: 1.15rem; color: rgba(255,255,255,0.65); max-width: 580px; margin: 0 auto 2.5rem; }
+    .btn-primary { background: var(--blue); color: white; padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; display: inline-block; }
+    .btn-primary:hover { background: var(--blue-light); }
+    .btn-outline { border: 2px solid rgba(255,255,255,0.25); color: white; padding: 0.85rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; display: inline-block; transition: border-color 0.2s; }
+    .btn-outline:hover { border-color: rgba(255,255,255,0.6); }
+
+    /* SHARED */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 0.75rem; display: block; }
+    .section-title { font-size: clamp(1.75rem, 3vw, 2.4rem); font-weight: 800; color: var(--navy); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
+    .section-sub { font-size: 1.05rem; color: var(--gray-600); max-width: 600px; }
+
+    /* PROBLEM */
+    .problem { background: var(--gray-50); }
+    .problem-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; margin-top: 3rem; }
+    .problem-card { background: white; border: 1px solid #fee2e2; border-left: 4px solid #ef4444; border-radius: 0 10px 10px 0; padding: 1.5rem; }
+    .problem-card h3 { font-size: 0.95rem; font-weight: 700; color: #991b1b; margin-bottom: 0.5rem; }
+    .problem-card p { font-size: 0.875rem; color: var(--gray-600); line-height: 1.6; }
+
+    /* HARDWARE */
+    .hardware { background: var(--navy); color: white; }
+    .hardware .section-label { color: #93c5fd; }
+    .hardware .section-title { color: white; }
+    .hardware .section-sub { color: rgba(255,255,255,0.6); }
+
+    .hw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+    .hw-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 2rem; position: relative;
+    }
+    .hw-card.primary { border-color: rgba(59,130,246,0.5); background: rgba(37,99,235,0.12); }
+    .hw-preferred { position: absolute; top: -12px; left: 1.5rem; background: var(--blue); color: white; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.25rem 0.75rem; border-radius: 100px; }
+    .hw-model { font-size: 1.2rem; font-weight: 800; color: white; margin-bottom: 0.25rem; }
+    .hw-sub { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+    .hw-specs { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .hw-specs li { font-size: 0.88rem; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 0.5rem; }
+    .hw-specs li::before { content: '▸'; color: #60a5fa; font-size: 0.75rem; }
+    .hw-price { font-size: 1rem; font-weight: 700; color: #4ade80; }
+    .hw-price span { font-weight: 400; font-size: 0.85rem; color: rgba(255,255,255,0.4); }
+
+    .hw-why { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1.75rem; margin-top: 2rem; }
+    .hw-why h3 { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 1rem; }
+    .hw-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .hw-why-item { display: flex; gap: 0.75rem; align-items: flex-start; }
+    .hw-why-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .hw-why-text h4 { font-size: 0.85rem; font-weight: 700; color: white; margin-bottom: 0.2rem; }
+    .hw-why-text p { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* STACK */
+    .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .stack-card { border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.75rem; background: white; transition: box-shadow 0.2s; }
+    .stack-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .stack-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+    .stack-icon { width: 46px; height: 46px; background: var(--sky); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .stack-name { font-size: 1rem; font-weight: 700; color: var(--navy); }
+    .stack-replaces { font-size: 0.78rem; color: var(--gray-400); margin-top: 0.15rem; }
+    .stack-replaces strong { color: #dc2626; }
+    .stack-desc { font-size: 0.88rem; color: var(--gray-600); line-height: 1.6; }
+    .stack-tag { display: inline-block; margin-top: 0.75rem; font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 4px; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+
+    /* PRICING */
+    .pricing-local { background: var(--gray-50); }
+    .price-box {
+      max-width: 680px; margin: 3rem auto 0;
+      background: white; border: 2px solid var(--blue);
+      border-radius: 20px; padding: 2.5rem;
+      box-shadow: 0 12px 40px rgba(37,99,235,0.12);
+    }
+    .price-box-header { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 1rem; margin-bottom: 2rem; }
+    .price-box h3 { font-size: 1.4rem; font-weight: 800; color: var(--navy); }
+    .price-box p { font-size: 0.9rem; color: var(--gray-600); margin-top: 0.4rem; }
+    .price-total { text-align: right; }
+    .price-total-num { font-size: 2.5rem; font-weight: 800; color: var(--navy); line-height: 1; display: block; }
+    .price-total-label { font-size: 0.82rem; color: var(--gray-400); }
+    .price-breakdown { border-top: 1px solid #f1f5f9; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .price-line { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+    .price-line-label { color: var(--gray-600); }
+    .price-line-value { font-weight: 600; color: var(--navy); }
+    .price-line-value.green { color: var(--green); }
+    .price-note { margin-top: 1.5rem; font-size: 0.85rem; color: var(--gray-400); text-align: center; }
+    .price-cta { display: block; text-align: center; margin-top: 2rem; }
+
+    /* FAQ */
+    .faq-list { max-width: 720px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
+    .faq-item { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+    .faq-q { padding: 1.2rem 1.5rem; font-weight: 600; color: var(--navy); font-size: 0.95rem; background: var(--gray-50); }
+    .faq-a { padding: 1rem 1.5rem 1.25rem; font-size: 0.88rem; color: var(--gray-600); line-height: 1.7; border-top: 1px solid #e2e8f0; }
+
+    /* CTA */
+    .cta-bottom { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); text-align: center; color: white; }
+    .cta-bottom .section-title { color: white; }
+    .cta-bottom p { color: rgba(255,255,255,0.65); max-width: 500px; margin: 0 auto 2rem; font-size: 1.05rem; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    footer { background: #080f1f; color: rgba(255,255,255,0.4); text-align: center; padding: 1.5rem 2rem; font-size: 0.82rem; }
+
+    @media (max-width: 700px) {
+      .hw-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+      .price-box-header { grid-template-columns: 1fr; }
+      .price-total { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">North Shore <span>IT</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#pricing">Pricing</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">🔒 Local First Philosophy</div>
+    <h1>Your data belongs in <em>your building.</em><br>Not theirs.</h1>
+    <p>We set up private, on-site infrastructure in your office so your files, passwords, and communications never touch a cloud server — and no AI ever trains on your clients' data.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="#setup" class="btn-primary">See What's Included</a>
+      <a href="index.html" class="btn-outline">← Back to Main Site</a>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROBLEM -->
+<section class="problem">
+  <div class="container">
+    <span class="section-label">Why This Matters</span>
+    <h2 class="section-title">Your data is someone else's product.</h2>
+    <p class="section-sub">Every file you store in the cloud, every email you send, every password you save — it's sitting on a server you don't own, managed by a company with different interests than yours.</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <h3>🤖 AI trains on your documents</h3>
+        <p>Microsoft, Google, and others use uploaded files to train AI models. Your client contracts, financial records, and case files may be feeding systems you never agreed to.</p>
+      </div>
+      <div class="problem-card">
+        <h3>🔓 Cloud breaches are routine</h3>
+        <p>Every major cloud provider has experienced breaches. When your data is centralized with millions of others, you're a target by association — not because of anything you did.</p>
+      </div>
+      <div class="problem-card">
+        <h3>📋 Professional confidentiality at risk</h3>
+        <p>Lawyers, accountants, and consultants have legal and ethical obligations to protect client information. Storing that data on third-party cloud servers is a gray area at best.</p>
+      </div>
+      <div class="problem-card">
+        <h3>💸 You're paying to lose control</h3>
+        <p>Microsoft 365 costs $150–300/yr per user. Google Workspace similar. You pay monthly — then they change terms, raise prices, or get breached. You have no leverage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HARDWARE -->
+<section class="hardware" id="setup">
+  <div class="container">
+    <span class="section-label">The Hardware</span>
+    <h2 class="section-title" style="color:white;">One small box. Everything runs locally.</h2>
+    <p class="section-sub">We standardize on two proven enterprise mini-PC models. Same hardware every time means we know it cold — faster setup, easier maintenance, no surprises.</p>
+
+    <div class="hw-grid">
+      <div class="hw-card primary">
+        <div class="hw-preferred">Our Standard</div>
+        <div class="hw-model">Dell OptiPlex 3080 Micro</div>
+        <div class="hw-sub">10th Gen Intel · Enterprise-grade · Whisper quiet</div>
+        <ul class="hw-specs">
+          <li>Intel Core i5-10500T (6 cores)</li>
+          <li>16GB DDR4 RAM</li>
+          <li>256–512GB NVMe SSD</li>
+          <li>Size of a thick paperback book</li>
+          <li>~10W idle power draw</li>
+          <li>Windows 11 Pro license included</li>
+          <li>Built-in WiFi + Gigabit Ethernet</li>
+        </ul>
+      </div>
+
+      <div class="hw-card">
+        <div class="hw-model">Lenovo ThinkCentre M920q Tiny</div>
+        <div class="hw-sub">8th Gen Intel · IBM build quality · Identical form factor</div>
+        <ul class="hw-specs">
+          <li>Intel Core i5-8500T (6 cores)</li>
+          <li>16GB DDR4 RAM</li>
+          <li>256–512GB NVMe SSD</li>
+          <li>Nearly identical size to OptiPlex</li>
+          <li>~10W idle power draw</li>
+          <li>Windows 11 Pro compatible</li>
+          <li>Built-in WiFi + Gigabit Ethernet</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hw-why">
+      <h3>Why these specific models?</h3>
+      <div class="hw-why-grid">
+        <div class="hw-why-item">
+          <div class="hw-why-icon">🔁</div>
+          <div class="hw-why-text">
+            <h4>Standardized every time</h4>
+            <p>Same model means same setup process, same configuration, same troubleshooting playbook. Zero guesswork.</p>
+          </div>
+        </div>
+        <div class="hw-why-item">
+          <div class="hw-why-icon">🏢</div>
+          <div class="hw-why-text">
+            <h4>Enterprise-grade hardware</h4>
+            <p>These machines were built for business deployments, not consumer use. Designed to run 24/7 for years.</p>
+          </div>
+        </div>
+        <div class="hw-why-item">
+          <div class="hw-why-icon">🤫</div>
+          <div class="hw-why-text">
+            <h4>Completely silent</h4>
+            <p>Sits on or behind a desk and you'll never know it's there. Fanless at idle, whisper-quiet under load.</p>
+          </div>
+        </div>
+        <div class="hw-why-item">
+          <div class="hw-why-icon">💡</div>
+          <div class="hw-why-text">
+            <h4>Extremely low power</h4>
+            <p>~$8–12/yr in electricity at current rates. Always-on infrastructure that doesn't add to your utility bill.</p>
+          </div>
+        </div>
+        <div class="hw-why-item">
+          <div class="hw-why-icon">🔧</div>
+          <div class="hw-why-text">
+            <h4>You own it outright</h4>
+            <p>It's your hardware, not ours. No subscription, no rental. It sits in your office and you own it free and clear.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOFTWARE STACK -->
+<section id="stack">
+  <div class="container">
+    <span class="section-label">The Software Stack</span>
+    <h2 class="section-title">Everything runs on your box.<br>Nothing leaves your office.</h2>
+    <p class="section-sub">We install open-source, battle-tested tools that replace the cloud services you're currently paying for — running entirely on your local hardware.</p>
+
+    <div class="stack-grid">
+
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon">📁</div>
+          <div>
+            <div class="stack-name">Nextcloud — File Storage</div>
+            <div class="stack-replaces">Replaces <strong>Google Drive / Dropbox / OneDrive</strong></div>
+          </div>
+        </div>
+        <div class="stack-desc">Full-featured file storage and sharing that looks and works like Google Drive — except it lives on your server. Share folders internally, sync to any device, access from anywhere via your private Tailscale connection. Your documents are never uploaded to anyone else's server.</div>
+        <span class="stack-tag tag-green">File Sync &amp; Share</span>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon">🔑</div>
+          <div>
+            <div class="stack-name">Vaultwarden — Password Manager</div>
+            <div class="stack-replaces">Replaces <strong>LastPass / 1Password / cloud Bitwarden</strong></div>
+          </div>
+        </div>
+        <div class="stack-desc">A self-hosted Bitwarden server — your entire password vault lives on your machine, not in a cloud database that's been breached multiple times. Familiar interface, browser extensions, mobile app. All the convenience, none of the exposure.</div>
+        <span class="stack-tag tag-blue">Security</span>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon">🛡️</div>
+          <div>
+            <div class="stack-name">Pi-hole — Network Ad &amp; Tracker Blocker</div>
+            <div class="stack-replaces">Replaces <strong>nothing — you likely don't have this</strong></div>
+          </div>
+        </div>
+        <div class="stack-desc">Blocks ads, trackers, and surveillance networks at the DNS level for your entire office — every device, automatically. Your staff's browsing stops feeding data brokers. Also speeds up page loads by dropping ad requests before they happen.</div>
+        <span class="stack-tag tag-blue">Privacy</span>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon">💾</div>
+          <div>
+            <div class="stack-name">Encrypted Local Backup</div>
+            <div class="stack-replaces">Replaces <strong>Backblaze / Carbonite / cloud backup</strong></div>
+          </div>
+        </div>
+        <div class="stack-desc">Automated nightly backups to an encrypted external drive on your premises. You own the backup hardware, you own the encryption key. Optional: we can also set up encrypted offsite backup to a second physical location you control. No third-party ever touches your backup data.</div>
+        <span class="stack-tag tag-amber">Backup &amp; Recovery</span>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon">💬</div>
+          <div>
+            <div class="stack-name">Matrix / Element — Private Team Chat</div>
+            <div class="stack-replaces">Replaces <strong>Slack / Teams for internal comms</strong></div>
+          </div>
+        </div>
+        <div class="stack-desc">End-to-end encrypted team messaging that lives on your server. Channels, direct messages, file sharing — everything Slack does, except your conversation history isn't stored on a vendor's cloud or available to their support staff. Familiar app on all platforms.</div>
+        <span class="stack-tag tag-green">Communication</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-local" id="pricing">
+  <div class="container" style="text-align:center;">
+    <span class="section-label">What It Costs</span>
+    <h2 class="section-title">One setup fee. Then it's yours forever.</h2>
+    <p class="section-sub" style="margin:0 auto;">No monthly subscription for the server itself. Hardware is yours. Software is open-source and free. You pay once for the setup — that's it.</p>
+
+    <div class="price-box">
+      <div class="price-box-header">
+        <div>
+          <h3>Local First Privacy Package</h3>
+          <p>Hardware + full software setup + onboarding for your team. Everything listed above, configured and tested.</p>
+        </div>
+        <div class="price-total">
+          <span class="price-total-num">$425</span>
+          <span class="price-total-label">one-time, all-in</span>
+        </div>
+      </div>
+      <div class="price-breakdown">
+        <div class="price-line">
+          <span class="price-line-label">Business-grade mini-PC (Dell or Lenovo)</span>
+          <span class="price-line-value">$150</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label">External encrypted backup drive (2TB)</span>
+          <span class="price-line-value">$75</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label">Setup, configuration &amp; software installation</span>
+          <span class="price-line-value">$200</span>
+        </div>
+        <div class="price-line">
+          <span class="price-line-label">Staff walkthrough &amp; onboarding (1 hr)</span>
+          <span class="price-line-value">included</span>
+        </div>
+        <div class="price-line" style="border-top:1px solid #e2e8f0;padding-top:0.75rem;margin-top:0.25rem;">
+          <span class="price-line-label" style="font-weight:700;color:var(--navy);">Monthly add-on (server monitoring)</span>
+          <span class="price-line-value green">+$0 with any retainer plan</span>
+        </div>
+      </div>
+      <p class="price-note">Already a North Shore IT client? Server monitoring is included in your existing retainer at no extra cost.</p>
+      <div class="price-cta">
+        <a href="index.html#contact" class="btn-primary" style="display:inline-block;">Get In Touch →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container" style="text-align:center;">
+    <span class="section-label">Common Questions</span>
+    <h2 class="section-title">Answered plainly.</h2>
+    <div class="faq-list" style="text-align:left;">
+
+      <div class="faq-item">
+        <div class="faq-q">Do I need to be technically minded to use any of this?</div>
+        <div class="faq-a">No. The day-to-day experience — sharing a file, saving a password, chatting with a teammate — looks like the apps you already use. The complexity is entirely on our side. We set it up, keep it running, and explain what each thing does in plain English.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What happens if the mini-PC dies?</div>
+        <div class="faq-a">We source a replacement — same model, same configuration — typically within a day or two. Because we standardize on known hardware, we can often restore your setup in under an hour from the encrypted backup. Your data is never at single-point risk.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I still use Google or Microsoft tools if I want?</div>
+        <div class="faq-a">Absolutely. Local First is an option, not a mandate. We're not asking you to throw away your existing tools. Most clients use a mix — local server for sensitive client files and passwords, Google for general internal stuff. We help you figure out where the lines make sense for your practice.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Do I need this if I already have IT support elsewhere?</div>
+        <div class="faq-a">Most traditional IT providers push cloud-first setups because they're easier to manage remotely. Very few offer a local-first alternative. If data ownership matters to your practice, this is unlikely to be something your current provider is offering — or even recommending.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-bottom">
+  <div class="container">
+    <span class="section-label" style="color:#93c5fd;">Ready?</span>
+    <h2 class="section-title">Your data should live in your building.</h2>
+    <p>Let's talk about what Local First looks like for your office — no pressure, no jargon.</p>
+    <div class="cta-btns">
+      <a href="index.html#contact" class="btn-primary">Get In Touch</a>
+      <a href="index.html" class="btn-outline">← Back to Main Site</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>North Shore IT LLC</span> · Skokie, IL · <a href="mailto:hello@northshoreitsupport.com" style="color:rgba(255,255,255,0.4);">hello@northshoreitsupport.com</a>
+</footer>
+
+</body>
+</html>
